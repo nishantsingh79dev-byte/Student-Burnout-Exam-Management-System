@@ -1,0 +1,40 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f6f8;
+}
+
+header {
+  background: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  background: #34495e;
+}
+
+nav a {
+  color: white;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  background: #1abc9c;
+}
+
+.hero {
+  padding: 40px;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background: #2c3e50;
+  color: white;
+}

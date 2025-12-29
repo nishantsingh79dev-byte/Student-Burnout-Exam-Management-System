@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Burnout & Exam Management System</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg-light:#f4f6f8;
+  --bg-dark:#121212;
+  --card-light:#ffffff;
+  --card-dark:#1e1e1e;
+  --primary:#1abc9c;
+  --secondary:#3498db;
+  --danger:#e74c3c;
+  --warn:#f1c40f;
+  --success:#2ecc71;
+  --text-light:#222;
+  --text-dark:#eee;
+  --glass: rgba(255,255,255,0.1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Inter', sans-serif;
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: background 0.5s, color 0.5s;
+}
+body.dark{
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+/* Header */
+header{
+  background: linear-gradient(90deg,#1abc9c,#3498db);
+  color:white;
+  padding:25px;
+  text-align:center;
+  font-weight:600;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+/* Navbar */
+nav{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+nav a{
+  color:white;
+  text-decoration:none;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:10px;
+  transition: all 0.3s;
+}
+nav a:hover{
+  background: rgba(255,255,255,0.2);
+}
+
+/* Cards */
+section{
+  padding:25px;
+}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+.card{
+  background: var(--card-light);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding:20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+body.dark .card{
+  background: var(--card-dark);
+}
+.card:hover{
+  transform: translateY(-5px);
+  box-shadow:0 12px 25px rgba(0,0,0,0.25);
+}
+
+/* Buttons */
+button{
+  padding:10px 16px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background: var(--primary);
+  color:white;
+  font-weight:600;
+  transition: all 0.3s;
+}
+button:hover{
+  background: var(--secondary);
+}
+button.locked{
+  background:#555;
+  cursor:not-allowed;
+}
+
+/* Inputs */
+input, select{
+  padding:8px;
+  margin:5px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+  width:100%;
+}
+
+/* Alerts */
+.alert{
+  padding:12px;
+  border-radius:8px;
+  color:white;
+  margin-top:10px;
+}
+.low{background: var(--success);}
+.medium{background: var(--warn);}
+.high{background: var(--danger);}
+
+/* Stars */
+.star{
+  font-size:22px;
+  cursor:pointer;
+  color:#ccc;
+  transition: color 0.3s;
+}
+.star.active{color: gold;}
+
+/* Toggle */
+.toggle{
+  text-align:center;
+  margin:15px;
+}
+.toggle button{
+  background: var(--secondary);
+  margin:0 5px;
+}
+
+/* Footer */
+footer{
+  text-align:center;
+  padding:15px;
+  background: linear-gradient(90deg,#1abc9c,#3498db);
+  color:white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* Responsive */
+@media(max-width:600px){
+  nav{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Student Burnout & Exam Management System</h1>
+  <p>Study • Focus • Health • Productivity</p>
+  <nav>
+    <a href="#study">Study Tracker</a>
+    <a href="#pomodoro">Pomodoro</a>
+    <a href="#goal">Goal</a>
+    <a href="#readiness">Readiness</a>
+    <a href="#analytics">Analytics</a>
+  </nav>
+</header>
+
+<div class="toggle">
+  <button onclick="toggleDark()">🌙 Dark Mode</button>
+</div>
+
+<section id="study">
+  <h2>📅 Study Time Tracker</h2>
+  <div class="card">
+    <p>Total Study Time Today: <b><span id="studyTime">0</span> min</b></p>
+    <button onclick="startStudy()">Start Study</button>
+    <button onclick="stopStudy()">Stop</button>
+  </div>
+</section>
+
+<section id="pomodoro">
+  <h2>⏱ Pomodoro Timer</h2>
+  <div class="card">
+    <h3 id="timer">25:00</h3>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="pauseTimer()">Pause</button>
+    <button onclick="resetTimer()">Reset</button>
+  </div>
+</section>
+
+<section id="goal">
+  <h2>🎯 Daily Study Goal</h2>
+  <div class="card">
+    <input id="goalInput" placeholder="Enter today's goal">
+    <button onclick="setGoal()">Set Goal</button>
+    <p id="goalStatus"></p>
+  </div>
+</section>
+
+<section id="readiness">
+  <h2>🧪 Exam Readiness Test</h2>
+  <div class="card">
+    <p><input type="checkbox" class="q"> Syllabus completed</p>
+    <p><input type="checkbox" class="q"> Revision done</p>
+    <p><input type="checkbox" class="q"> Mock tests attempted</p>
+    <p><input type="checkbox" class="q"> Sleep routine okay</p>
+    <p><input type="checkbox" class="q"> Stress under control</p>
+    <button onclick="checkReadiness()">Check Readiness</button>
+    <p id="readyResult"></p>
+  </div>
+</section>
+
+<section id="analytics">
+  <h2>📊 Focus Analytics</h2>
+  <div class="grid">
+    <div class="card">
+      <p>Pomodoro Sessions: <span id="sessions">0</span></p>
+      <p>Productivity Level: <span id="prod">Low</span></p>
+    </div>
+    <div class="card">
+      <p>Hydration Reminder:</p>
+      <button onclick="waterReminder()">💧 Drink Water</button>
+    </div>
+    <div class="card">
+      <p>Daily Report:</p>
+      <button onclick="generateReport()">Generate Report</button>
+      <pre id="report"></pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Hackathon Project | World-Class UI Upgrade
+</footer>
+
+<script>
+/* Dark Mode */
+function toggleDark(){document.body.classList.toggle('dark');}
+
+/* Study Timer */
+let studyStart,total=0,sessions=0;
+function startStudy(){studyStart=Date.now();sessions++;updateAnalytics();}
+function stopStudy(){
+  if(studyStart){
+    total+=Math.floor((Date.now()-studyStart)/60000);
+    document.getElementById('studyTime').innerText=total;
+  }
+}
+function updateAnalytics(){
+  document.getElementById('sessions').innerText=sessions;
+  document.getElementById('prod').innerText=sessions>=4?"High":sessions>=2?"Medium":"Low";
+}
+
+/* Pomodoro */
+let time=1500,timer;
+const timerText=document.getElementById('timer');
+function startTimer(){timer=setInterval(()=>{
+  if(time>0){time--;let m=Math.floor(time/60),s=time%60;timerText.innerText=m+":"+(s<10?"0":"")+s;}
+},1000);}
+function pauseTimer(){clearInterval(timer);}
+function resetTimer(){clearInterval(timer);time=1500;timerText.innerText="25:00";}
+
+/* Goal */
+function setGoal(){document.getElementById('goalStatus').innerText="Goal set ✔ Stay Focused!";}
+
+/* Readiness */
+function checkReadiness(){let c=document.querySelectorAll('.q:checked').length;
+document.getElementById('readyResult').innerText=c>=4?"✅ Exam Ready":"⚠️ Needs More Prep";}
+
+/* Water Reminder */
+function waterReminder(){setTimeout(()=>alert("💧 Drink water now!"),1000);}
+
+/* Daily Report */
+function generateReport(){document.getElementById('report').innerText=
+`Study Time: ${total} min
+Pomodoro Sessions: ${sessions}
+Productivity: ${sessions>=4?"High":"Medium"}
+Goal Status: Checked
+Readiness: Checked`;}
+</script>
+
+</body>
+</html>
